@@ -1,6 +1,7 @@
 package com.computerdude.larry.gamestate;
 
 import java.awt.Graphics2D;
+import java.util.concurrent.TimeUnit;
 
 import com.computerdude.larry.tilemap.Background;
 import com.sun.glass.events.KeyEvent;
@@ -29,7 +30,12 @@ public class LoadingState extends GameState {
 	
 	public void draw(Graphics2D g) {
 		bg.draw(g);
-		
+		try {
+			TimeUnit.SECONDS.sleep(2);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		sm.setState(0);
 		
 	}
 	
