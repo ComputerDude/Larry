@@ -1,7 +1,6 @@
 package com.computerdude.larry.gamestate;
 
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 public class GameStateManager {
 
@@ -9,29 +8,22 @@ public class GameStateManager {
 	private int currentState;
 	
 	public static int CURRENCY;
-	public static final int MENUSTATE = 0;
-	public static final int SETTINGSSTATE = 1;
-	public static final int LEVEL1STATE = 2;
-	public static final int LOADINGSTATE = 3;
+	public static final int MENUSTATE = 1;
+	public static final int SETTINGSSTATE = 2;
+	public static final int LEVEL1STATE = 3;
+	public static final int LOADINGSTATE = 0;
 	
 	public GameStateManager() {
 	
 		gameStates = new ArrayList<GameState>();
 		
 		currentState = LOADINGSTATE;
+		gameStates.add(new LoadingState(this));
 		gameStates.add(new MenuState(this));
     	gameStates.add(new SettingsState(this));
 		gameStates.add(new Level1State(this));
-		gameStates.add(new LoadingState(this));
-		
-		try {
-			TimeUnit.SECONDS.sleep(2);
-			setState(0);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		
-		
+	
+		setState(0);	
 	}
 	
 	public void setState(int state) {
@@ -53,5 +45,9 @@ public class GameStateManager {
 	
 	public void keyReleased(int k) {
 		gameStates.get(currentState).keyReleased(k);
+	}
+	
+	public int getCurrentState() {
+		return currentState;
 	}
 }

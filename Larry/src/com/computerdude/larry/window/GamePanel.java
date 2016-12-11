@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JPanel;
 
@@ -54,7 +55,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
 	}
 
-	public void run() {
+	public void run() { 
 
 		init();
 
@@ -62,7 +63,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		long elapsed;
 		long wait;
 
-		while (running) {
+		while (running) { //Every Frame Loop
 			
 			start = System.nanoTime();
 
@@ -70,9 +71,24 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			
 			draw();
 			drawToScreen();
+			
+			if (sm.getCurrentState() == GameStateManager.LOADINGSTATE) {
+				try {
+					TimeUnit.SECONDS.sleep(3);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				sm.setState(GameStateManager.MENUSTATE);
+			}
 
-			elapsed = System.nanoTime() - start;
+			elapsed = System.nanoTime() - start;			
 			wait = targetTime - elapsed / 10000000;
+			
+			if (wait < 0) {
+				wait = 0;
+			}
 
 			try {
 				Thread.sleep(wait);
